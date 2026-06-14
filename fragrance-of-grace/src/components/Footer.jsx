@@ -1,0 +1,155 @@
+// components/Footer.jsx
+// Logo file: public/images/logo.png — displayed on white background, as provided.
+
+import React from 'react';
+import { Youtube, Instagram, MessageCircle, Headphones } from 'lucide-react';
+
+const navLinks = [
+  { label: 'Home', href: '#home' },
+  { label: 'About', href: '#about' },
+  { label: 'Story', href: '#story' },
+  { label: 'Podcast', href: '#podcast' },
+  { label: 'Videos', href: '#videos' },
+  { label: 'Music', href: '#music' },
+  { label: 'Reels', href: '#reels' },
+  { label: 'Shop', href: '#shop' },
+  { label: 'Connect', href: '#connect' },
+];
+
+const socialLinks = [
+  { label: 'Instagram', href: 'https://www.instagram.com/hildaakpalaworship/', icon: Instagram },
+  { label: 'YouTube', href: 'https://www.youtube.com/playlist?list=PL3SqgwWGnc4gU6Kw3FfP32AF9TgqgJn5-', icon: Youtube },
+  { label: 'WhatsApp', href: 'https://wa.me/12403617229', icon: MessageCircle },
+  { label: 'Spotify', href: 'https://open.spotify.com/show/1MFgsxMOUVJZL2mhWwDouM?si=d68e3869453e43bd', icon: Headphones },
+];
+
+const handleNavClick = (href) => {
+  const target = document.querySelector(href);
+  if (target) target.scrollIntoView({ behavior: 'smooth' });
+};
+
+export default function Footer() {
+  return (
+    <footer className="bg-sage border-t border-navy/10" aria-label="Site footer">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-16">
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12 mb-10">
+
+          {/* Brand column */}
+          <div className="md:col-span-1">
+            {/* Logo on white background — do not remove background */}
+            {/* Logo file: public/images/logo.png */}
+            <a
+              href="#home"
+              onClick={(e) => { e.preventDefault(); handleNavClick('#home'); }}
+              className="flex items-center gap-3 mb-4 group"
+              aria-label="Fragrance of Grace — Back to top"
+            >
+              <div className="bg-white rounded p-1.5 shadow border border-gold/20 flex-shrink-0">
+                <img
+                  src="/images/logo.png"
+                  alt="Fragrance of Grace logo"
+                  className="h-12 w-12 object-contain"
+                  loading="lazy"
+                />
+              </div>
+              <div>
+                <span
+                  className="text-navy font-playfair text-base font-medium block leading-tight"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  Fragrance of Grace
+                </span>
+                <span className="text-navy/50 text-xs font-inter tracking-widest uppercase">
+                  Identity in Christ
+                </span>
+              </div>
+            </a>
+            <p className="text-navy/70 font-inter text-sm leading-relaxed max-w-xs">
+              Expressing the identity of Christ through sound, worship, and the revelation of His
+              grace.
+            </p>
+          </div>
+
+          {/* Navigation column */}
+          <div>
+            <p className="text-gold text-xs font-inter font-semibold tracking-[0.2em] uppercase mb-5">
+              Navigation
+            </p>
+            <nav aria-label="Footer navigation">
+              <ul className="flex flex-col gap-2.5">
+                {navLinks.map((link) => (
+                  <li key={link.href}>
+                    <a
+                      href={link.href}
+                      onClick={(e) => { e.preventDefault(); handleNavClick(link.href); }}
+                      className="text-navy/70 font-inter text-sm hover:text-gold transition-colors"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+
+          {/* Social + Podcast column */}
+          <div>
+            <p className="text-gold text-xs font-inter font-semibold tracking-[0.2em] uppercase mb-5">
+              Stay Connected
+            </p>
+            <div className="flex gap-3 mb-6" role="list" aria-label="Social media links">
+              {socialLinks.map((social) => {
+                const Icon = social.icon;
+                return (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-9 h-9 rounded-full border border-navy/15 flex items-center justify-center text-navy/60 hover:text-gold hover:border-gold/40 transition-all"
+                    role="listitem"
+                    aria-label={social.label}
+                  >
+                    <Icon size={15} aria-hidden="true" />
+                  </a>
+                );
+              })}
+            </div>
+            <div className="space-y-2">
+              <a
+                href="https://www.youtube.com/playlist?list=PL3SqgwWGnc4gU6Kw3FfP32AF9TgqgJn5-"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-navy/70 font-inter text-xs hover:text-gold transition-colors"
+              >
+                <Youtube size={13} aria-hidden="true" />
+                Fragrance Podcast on YouTube
+              </a>
+              <a
+                href="https://open.spotify.com/show/1MFgsxMOUVJZL2mhWwDouM?si=d68e3869453e43bd"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-navy/70 font-inter text-xs hover:text-gold transition-colors"
+              >
+                <Headphones size={13} aria-hidden="true" />
+                Fragrance Podcast on Spotify
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div className="border-t border-navy/10 pt-7 flex flex-col sm:flex-row items-center justify-between gap-3 text-center">
+          <p className="text-navy/50 font-inter text-xs">
+            &copy; 2026 Fragrance of Grace. All rights reserved.
+          </p>
+          <p className="text-navy/35 font-inter text-xs">
+            Designed with grace.
+          </p>
+        </div>
+
+      </div>
+    </footer>
+  );
+}
