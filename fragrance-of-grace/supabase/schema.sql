@@ -21,6 +21,8 @@ create table if not exists public.podcast_episodes (
   youtube_url    text,
   spotify_url    text,
   rumble_url     text,
+  facebook_url   text,
+  instagram_url  text,
   is_new         boolean not null default false,
   sort_order     integer not null default 0,
   created_at     timestamptz not null default now()
@@ -37,6 +39,17 @@ create table if not exists public.music_tracks (
   apple_music_url  text,
   sort_order       integer not null default 0,
   created_at       timestamptz not null default now()
+);
+
+create table if not exists public.reels (
+  id            uuid primary key default gen_random_uuid(),
+  title         text not null,
+  description   text not null default '',
+  thumbnail_url text,
+  link          text,
+  platform      text not null default 'YouTube',
+  sort_order    integer not null default 0,
+  created_at    timestamptz not null default now()
 );
 
 -- Exactly four fixed slots. Rows are replaced in place, never added.
@@ -60,6 +73,7 @@ create table if not exists public.featured_videos (
 alter table public.podcast_episodes enable row level security;
 alter table public.music_tracks     enable row level security;
 alter table public.featured_videos  enable row level security;
+alter table public.reels            enable row level security;
 
 drop policy if exists "public read episodes"  on public.podcast_episodes;
 drop policy if exists "admin write episodes"   on public.podcast_episodes;
@@ -67,6 +81,8 @@ drop policy if exists "public read music"      on public.music_tracks;
 drop policy if exists "admin write music"      on public.music_tracks;
 drop policy if exists "public read featured"   on public.featured_videos;
 drop policy if exists "admin write featured"   on public.featured_videos;
+drop policy if exists "public read reels"      on public.reels;
+drop policy if exists "admin write reels"      on public.reels;
 
 create policy "public read episodes" on public.podcast_episodes
   for select using (true);
@@ -83,6 +99,12 @@ create policy "admin write music" on public.music_tracks
 create policy "public read featured" on public.featured_videos
   for select using (true);
 create policy "admin write featured" on public.featured_videos
+  for all using (auth.role() = 'authenticated')
+  with check (auth.role() = 'authenticated');
+
+create policy "public read reels" on public.reels
+  for select using (true);
+create policy "admin write reels" on public.reels
   for all using (auth.role() = 'authenticated')
   with check (auth.role() = 'authenticated');
 
@@ -192,3 +214,20 @@ select * from (values
    '/images/video-thumbnail-4.jpg', 'https://www.instagram.com/hildaakpalaworship/')
 ) as seed
 where not exists (select 1 from public.featured_videos);
+
+insert into public.reels (title, description, thumbnail_url, link, platform, sort_order)
+select * from (values
+  ('You Do Not Need To Be Perfect',
+   'God isn''t waiting for you to become perfect before He uses you.',
+   '/images/reel-1.jpg',
+   'https://youtube.com/shorts/nH0i9KdqZgw?si=xo4APbIrsv5Qz0ZI', 'YouTube', 10),
+  ('God Can Redirect Your Path!',
+   'Even if you''ve made mistakes, God can still redirect your path.',
+   '/images/reel-2.jpg',
+   'https://youtube.com/shorts/I-9tJz2owzo?si=jE_H8f7Nb17X5YNm', 'YouTube', 20),
+  ('Walk By Faith, Not Fear!',
+   'Fear will always ask ''what if'' — choose to walk by faith instead.',
+   '/images/reel-3.jpg',
+   'https://youtube.com/shorts/zI0eKhvAjKw?si=32Ogdl7EpxPAdP75', 'YouTube', 30)
+) as seed
+where not exists (select 1 from public.reels);

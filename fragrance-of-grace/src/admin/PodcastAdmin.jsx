@@ -16,6 +16,8 @@ const blank = () => ({
   youtube_url: '',
   spotify_url: '',
   rumble_url: '',
+  facebook_url: '',
+  instagram_url: '',
   is_new: true,
   sort_order: 0,
 });
@@ -171,6 +173,12 @@ export default function PodcastAdmin() {
                   </Field>
                   <Field label="Rumble link" hint="Optional. Leave blank to hide the Rumble button.">
                     <Input value={row.rumble_url || ''} onChange={(e) => patch(row.id, { rumble_url: e.target.value })} placeholder="https://rumble.com/…" />
+                  </Field>
+                  <Field label="Facebook post link" hint="Optional. Leave blank to hide the Facebook button.">
+                    <Input value={row.facebook_url || ''} onChange={(e) => patch(row.id, { facebook_url: e.target.value })} placeholder="https://www.facebook.com/…" />
+                  </Field>
+                  <Field label="Instagram post link" hint="Optional. Leave blank to hide the Instagram button.">
+                    <Input value={row.instagram_url || ''} onChange={(e) => patch(row.id, { instagram_url: e.target.value })} placeholder="https://www.instagram.com/p/…" />
                   </Field>
 
                   <label className="inline-flex items-center gap-2.5 cursor-pointer">

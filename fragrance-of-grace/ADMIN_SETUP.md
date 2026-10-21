@@ -86,8 +86,21 @@ Three tabs:
   from the link automatically. Leave Spotify blank to show "coming soon".
 - **Featured Videos** — the four slots on the Ministry page. Replace any one in
   place. There is no add or delete, because that grid is built for exactly four.
+- **Reels** — the short clips on the Ministry page. Add, edit or remove them,
+  and set which platform each one is from so the badge is right. Tapping a reel
+  on the website opens its link in a new tab; nothing plays on the site, so the
+  views stay on YouTube, Instagram or Facebook.
 
 Changes are live the moment you hit save. No redeploy, no waiting.
+
+## Updating the database later
+
+New features sometimes need new database columns. When that happens there is a
+numbered file in `supabase/`, for example `migration-002-reels-and-social.sql`.
+Run it the same way as `schema.sql`: **SQL Editor** → **New query** → paste →
+**Run**. They are safe to re-run and never overwrite your content.
+
+Run these before using a new tab, or saving will fail with a column error.
 
 ## Signing in with just a username
 

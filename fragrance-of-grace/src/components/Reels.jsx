@@ -2,10 +2,41 @@
 // Daily reels from YouTube Shorts — manually managed, no API.
 
 import React from 'react';
-import { Play, Youtube } from 'lucide-react';
+import { Play, Youtube, Instagram, Facebook } from 'lucide-react';
 import { reels } from '../data/reels.js';
+import { useContent } from '../lib/useContent.js';
+
+// The badge follows the platform, so an Instagram or Facebook reel is not
+// mislabelled as a YouTube Short.
+const badgeFor = (platform) => {
+  switch (platform) {
+    case 'Instagram':
+      return { label: 'Reel', Icon: Instagram, className: 'bg-gradient-to-br from-[#DD2A7B] to-[#8134AF] text-white' };
+    case 'Facebook':
+      return { label: 'Reel', Icon: Facebook, className: 'bg-[#1877F2] text-white' };
+    case 'TikTok':
+      return { label: 'TikTok', Icon: Play, className: 'bg-black text-white' };
+    case 'Other':
+      return { label: 'Watch', Icon: Play, className: 'bg-navy/80 text-white' };
+    default:
+      return { label: 'Short', Icon: Youtube, className: 'bg-red-600/90 text-white' };
+  }
+};
 
 export default function Reels() {
+  const items = useContent({
+    table: 'reels',
+    fallback: reels,
+    mapRow: (r) => ({
+      id: r.id,
+      title: r.title,
+      description: r.description,
+      thumbnail: r.thumbnail_url,
+      link: r.link,
+      platform: r.platform,
+    }),
+  });
+
   return (
     <section
       id="reels"
@@ -33,7 +64,9 @@ export default function Reels() {
 
         {/* Reels Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          {reels.map((reel) => (
+          {items.map((reel) => {
+            const badge = badgeFor(reel.platform);
+            return (
             <a
               key={reel.id}
               href={reel.link}
@@ -62,9 +95,9 @@ export default function Reels() {
                   </div>
                 </div>
                 <div className="absolute top-3 right-3">
-                  <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-inter font-medium bg-red-600/90 text-white">
-                    <Youtube size={11} aria-hidden="true" />
-                    Short
+                  <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-inter font-medium ${badge.className}`}>
+                    <badge.Icon size={11} aria-hidden="true" />
+                    {badge.label}
                   </span>
                 </div>
               </div>
@@ -80,7 +113,8 @@ export default function Reels() {
                 </p>
               </div>
             </a>
-          ))}
+            );
+          })}
         </div>
 
       </div>

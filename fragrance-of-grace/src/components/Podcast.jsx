@@ -1,7 +1,7 @@
 // components/Podcast.jsx
 
 import React from 'react';
-import { Youtube, Headphones, Mic, ExternalLink } from 'lucide-react';
+import { Youtube, Headphones, Mic, ExternalLink, Facebook, Instagram } from 'lucide-react';
 import { useContent } from '../lib/useContent.js';
 
 const SPOTIFY_SHOW = "https://open.spotify.com/show/1MFgsxMOUVJZL2mhWwDouM?si=d68e3869453e43bd";
@@ -103,6 +103,8 @@ export default function Podcast() {
       youtubeLink: r.youtube_url,
       spotifyLink: r.spotify_url,
       rumbleLink: r.rumble_url || null,
+      facebookLink: r.facebook_url || null,
+      instagramLink: r.instagram_url || null,
       isNew: r.is_new,
     }),
   });
@@ -293,6 +295,31 @@ export default function Podcast() {
                       >
                         <ExternalLink size={12} aria-hidden="true" />
                         Rumble
+                      </a>
+                    )}
+                    {ep.facebookLink && (
+                      <a
+                        href={ep.facebookLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#1877F2] text-white rounded text-xs font-inter font-medium hover:opacity-90 transition-opacity"
+                        aria-label={`Watch ${ep.title} on Facebook`}
+                      >
+                        <Facebook size={12} aria-hidden="true" />
+                        Facebook
+                      </a>
+                    )}
+                    {ep.instagramLink && (
+                      <a
+                        href={ep.instagramLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-inter font-medium text-white hover:opacity-90 transition-opacity"
+                        style={{ background: 'linear-gradient(45deg, #F58529, #DD2A7B, #8134AF)' }}
+                        aria-label={`Watch ${ep.title} on Instagram`}
+                      >
+                        <Instagram size={12} aria-hidden="true" />
+                        Instagram
                       </a>
                     )}
                   </div>

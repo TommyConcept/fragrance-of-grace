@@ -2,13 +2,14 @@
 
 import React from 'react';
 import { NavLink, Outlet, Link } from 'react-router-dom';
-import { Mic, Music, Video, LogOut, ExternalLink } from 'lucide-react';
+import { Mic, Music, Video, Clapperboard, LogOut, ExternalLink } from 'lucide-react';
 import { useAuth } from './AuthContext.jsx';
 
 const tabs = [
   { to: '/admin/podcast',  label: 'Podcast',         icon: Mic },
   { to: '/admin/music',    label: 'Music',           icon: Music },
   { to: '/admin/featured', label: 'Featured Videos', icon: Video },
+  { to: '/admin/reels',    label: 'Reels',            icon: Clapperboard },
 ];
 
 export default function AdminLayout() {

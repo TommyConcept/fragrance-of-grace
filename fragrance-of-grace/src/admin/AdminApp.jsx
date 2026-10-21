@@ -9,6 +9,7 @@ import AdminLayout from './AdminLayout.jsx';
 import PodcastAdmin from './PodcastAdmin.jsx';
 import MusicAdmin from './MusicAdmin.jsx';
 import FeaturedVideosAdmin from './FeaturedVideosAdmin.jsx';
+import ReelsAdmin from './ReelsAdmin.jsx';
 
 export default function AdminApp() {
   return (
@@ -20,6 +21,7 @@ export default function AdminApp() {
             <Route path="podcast"  element={<PodcastAdmin />} />
             <Route path="music"    element={<MusicAdmin />} />
             <Route path="featured" element={<FeaturedVideosAdmin />} />
+            <Route path="reels"    element={<ReelsAdmin />} />
             <Route path="*"        element={<Navigate to="/admin/podcast" replace />} />
           </Route>
         </Routes>
