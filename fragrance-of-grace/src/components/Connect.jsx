@@ -1,7 +1,7 @@
 // components/Connect.jsx
 
 import React from 'react';
-import { Youtube, Instagram, MessageCircle, Headphones } from 'lucide-react';
+import { Youtube, Instagram, Facebook, MessageCircle, Headphones } from 'lucide-react';
 import EmailSignupForm from './EmailSignupForm.jsx';
 
 const socialLinks = [
@@ -11,6 +11,13 @@ const socialLinks = [
     icon: Instagram,
     color: 'hover:bg-gradient-to-br hover:from-purple-600 hover:to-pink-500 hover:border-transparent hover:text-white',
     textColor: 'text-purple-600',
+  },
+  {
+    label: 'Facebook',
+    href: 'https://www.facebook.com/share/1G1jmEi67G/',
+    icon: Facebook,
+    color: 'hover:bg-[#1877F2] hover:border-transparent hover:text-white',
+    textColor: 'text-[#1877F2]',
   },
   {
     label: 'YouTube',

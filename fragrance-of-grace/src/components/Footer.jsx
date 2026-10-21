@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Youtube, Instagram, MessageCircle, Headphones } from 'lucide-react';
+import { Youtube, Instagram, Facebook, MessageCircle, Headphones } from 'lucide-react';
 
 const navLinks = [
   { label: 'Home',     to: '/' },
@@ -16,6 +16,7 @@ const navLinks = [
 
 const socialLinks = [
   { label: 'Instagram', href: 'https://www.instagram.com/hildaakpalaworship/', icon: Instagram },
+  { label: 'Facebook',  href: 'https://www.facebook.com/share/1G1jmEi67G/', icon: Facebook },
   { label: 'YouTube',   href: 'https://www.youtube.com/playlist?list=PL3SqgwWGnc4gU6Kw3FfP32AF9TgqgJn5-', icon: Youtube },
   { label: 'WhatsApp',  href: 'https://wa.me/12403617229', icon: MessageCircle },
   { label: 'Spotify',   href: 'https://open.spotify.com/show/1MFgsxMOUVJZL2mhWwDouM?si=d68e3869453e43bd', icon: Headphones },
