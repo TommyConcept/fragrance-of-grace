@@ -63,6 +63,7 @@ for all environments (Production, Preview, Development):
 | `VITE_SUPABASE_ANON_KEY` | your anon public key from step 4 |
 | `VITE_ADMIN_USERNAME` | `Fragranceofgrace` |
 | `VITE_ADMIN_EMAIL` | the email you used in step 3 |
+| `VITE_ADMIN_PASSWORD` | *optional* — see "Signing in with just a username" below |
 
 Then **Deployments** → latest → **Redeploy**. Vite reads these at build
 time, so a redeploy is required for them to take effect.
@@ -87,6 +88,27 @@ Three tabs:
   place. There is no add or delete, because that grid is built for exactly four.
 
 Changes are live the moment you hit save. No redeploy, no waiting.
+
+## Signing in with just a username
+
+By default you type a username and a password. If you would rather sign in with
+the username alone, set `VITE_ADMIN_PASSWORD` in Vercel to your admin password
+and redeploy. The password box then disappears.
+
+**Know what this costs.** That password is built into the JavaScript every
+visitor downloads. Anyone who goes looking through it can recover it and sign in
+as you, edit your episodes, or delete them. It is a convenience setting, not a
+secure one.
+
+Two things make it less risky:
+
+- Use a password that is used for nothing else, so recovering it gives away
+  nothing but this admin area.
+- Saving still requires a real signed-in session, so an automated scan cannot
+  write to your content without first extracting that password.
+
+To undo it at any time, delete the `VITE_ADMIN_PASSWORD` variable in Vercel and
+redeploy. The password box comes back and nothing else changes.
 
 ## Good to know
 

@@ -2,7 +2,7 @@
 // Session state for the admin area, backed by Supabase Auth.
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { supabase, isSupabaseConfigured, ADMIN_USERNAME, ADMIN_EMAIL } from '../lib/supabase.js';
+import { supabase, isSupabaseConfigured, ADMIN_USERNAME, ADMIN_EMAIL, ADMIN_PASSWORD } from '../lib/supabase.js';
 
 const AuthContext = createContext(null);
 
@@ -23,7 +23,8 @@ export function AuthProvider({ children }) {
   }, []);
 
   // Accepts the username rather than an email address. The username maps to the
-  // single admin account; Supabase checks the password.
+  // single admin account. When VITE_ADMIN_PASSWORD is configured the password
+  // is supplied automatically, so the owner signs in with a username alone.
   const signIn = async (username, password) => {
     if (!isSupabaseConfigured) {
       return { error: 'The admin area is not configured yet. Add the Supabase keys in Vercel and redeploy.' };
@@ -32,15 +33,26 @@ export function AuthProvider({ children }) {
       return { error: 'No admin email is configured. Set VITE_ADMIN_EMAIL in Vercel and redeploy.' };
     }
     if (username.trim().toLowerCase() !== ADMIN_USERNAME.toLowerCase()) {
-      return { error: 'That username and password do not match.' };
+      return { error: 'That username was not recognised.' };
+    }
+
+    const effectivePassword = ADMIN_PASSWORD || password;
+    if (!effectivePassword) {
+      return { error: 'Please enter your password.' };
     }
 
     const { error } = await supabase.auth.signInWithPassword({
       email: ADMIN_EMAIL,
-      password,
+      password: effectivePassword,
     });
-    // Deliberately vague: never reveal whether the username or the password was wrong.
-    if (error) return { error: 'That username and password do not match.' };
+    if (error) {
+      return {
+        error: ADMIN_PASSWORD
+          // The owner typed nothing wrong — the stored password is stale.
+          ? 'Sign in failed. The saved password no longer matches this account; update VITE_ADMIN_PASSWORD in Vercel and redeploy.'
+          : 'That username and password do not match.',
+      };
+    }
     return { error: null };
   };
 
