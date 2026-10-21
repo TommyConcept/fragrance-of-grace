@@ -5,6 +5,7 @@
 import React from 'react';
 import { Play, Youtube, Instagram } from 'lucide-react';
 import { featuredVideos } from '../data/featuredVideos.js';
+import { useContent } from '../lib/useContent.js';
 
 const platformIcon = (platform) => {
   switch (platform) {
@@ -29,6 +30,22 @@ const platformColor = (platform) => {
 };
 
 export default function FeaturedVideos() {
+  // Bundled videos render first, then whatever the admin has saved takes over.
+  const videos = useContent({
+    table: 'featured_videos',
+    orderBy: 'slot',
+    fallback: featuredVideos,
+    mapRow: (r) => ({
+      id: r.slot,
+      title: r.title,
+      platform: r.platform,
+      description: r.description,
+      thumbnail: r.thumbnail_url,
+      link: r.link,
+      label: r.label,
+    }),
+  });
+
   return (
     <section
       id="videos"
@@ -60,7 +77,7 @@ export default function FeaturedVideos() {
           role="list"
           aria-label="Featured video list"
         >
-          {featuredVideos.map((video) => (
+          {videos.map((video) => (
             <article
               key={video.id}
               className="group bg-white rounded-2xl overflow-hidden border border-gold/10 hover:border-gold/30 hover:shadow-md transition-all duration-300"

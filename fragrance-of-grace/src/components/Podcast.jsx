@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Youtube, Headphones, Mic, ExternalLink } from 'lucide-react';
+import { useContent } from '../lib/useContent.js';
 
 const SPOTIFY_SHOW = "https://open.spotify.com/show/1MFgsxMOUVJZL2mhWwDouM?si=d68e3869453e43bd";
 const YOUTUBE_PLAYLIST = "https://www.youtube.com/playlist?list=PL3SqgwWGnc4gU6Kw3FfP32AF9TgqgJn5-";
@@ -84,6 +85,31 @@ const season1Episodes = [
 ];
 
 export default function Podcast() {
+  // One table holds every episode; the page groups it back into seasons.
+  const allEpisodes = useContent({
+    table: 'podcast_episodes',
+    fallback: [
+      ...season2Episodes.map((e) => ({ ...e, _season: 2 })),
+      ...season1Episodes.map((e) => ({ ...e, _season: 1 })),
+    ],
+    mapRow: (r) => ({
+      id: r.id,
+      _season: r.season,
+      season: r.season_label || `Season ${r.season} \u00b7 Episode ${r.episode_number ?? ''}`.trim(),
+      title: r.title,
+      description: r.description,
+      label: r.label,
+      thumbnail: r.thumbnail_url,
+      youtubeLink: r.youtube_url,
+      spotifyLink: r.spotify_url,
+      rumbleLink: r.rumble_url || null,
+      isNew: r.is_new,
+    }),
+  });
+
+  const season2 = allEpisodes.filter((e) => e._season !== 1);
+  const season1 = allEpisodes.filter((e) => e._season === 1);
+
   return (
     <section
       id="podcast"
@@ -193,7 +219,7 @@ export default function Podcast() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {season2Episodes.map((ep) => (
+            {season2.map((ep) => (
               <article
                 key={ep.id}
                 className="group bg-white rounded-2xl overflow-hidden border border-gold/15 hover:border-gold/40 hover:shadow-md transition-all duration-300"
@@ -287,7 +313,7 @@ export default function Podcast() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-            {season1Episodes.map((ep) => (
+            {season1.map((ep) => (
               <a
                 key={ep.id}
                 href={ep.spotifyLink}

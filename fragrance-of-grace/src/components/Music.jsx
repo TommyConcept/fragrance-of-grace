@@ -4,6 +4,7 @@
 import React from 'react';
 import { Youtube, Music as MusicNote, ExternalLink } from 'lucide-react';
 import { musicLinks } from '../data/musicLinks.js';
+import { useContent } from '../lib/useContent.js';
 
 function MusicCard({ song }) {
   return (
@@ -123,6 +124,22 @@ function MusicCard({ song }) {
 }
 
 export default function Music() {
+  const songs = useContent({
+    table: 'music_tracks',
+    fallback: musicLinks,
+    mapRow: (r) => ({
+      id: r.id,
+      title: r.title,
+      description: r.description,
+      albumArt: r.album_art_url,
+      youtubeEmbed: r.youtube_embed,
+      youtubeLink: r.youtube_url,
+      // The page treats '#' as "coming soon", so map an empty link to that.
+      spotifyLink: r.spotify_url || '#',
+      appleMusicLink: r.apple_music_url || '#',
+    }),
+  });
+
   return (
     <section
       id="music"
@@ -151,7 +168,7 @@ export default function Music() {
 
         {/* Music Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {musicLinks.map((song) => (
+          {songs.map((song) => (
             <MusicCard key={song.id} song={song} />
           ))}
         </div>
