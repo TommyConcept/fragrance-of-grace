@@ -78,3 +78,8 @@ h1, h2, h3, .font-playfair {
   height: 100%;
   border: 0;
 }
+
+/* Design Studio — selection outline, never present during export */
+.de-el { cursor: pointer; }
+.de-el:hover { outline: 2px dashed rgba(201, 162, 39, 0.65); outline-offset: 2px; }
+.de-el[data-selected='true'] { outline: 3px solid #C9A227; outline-offset: 2px; }

@@ -10,12 +10,15 @@ import PodcastAdmin from './PodcastAdmin.jsx';
 import MusicAdmin from './MusicAdmin.jsx';
 import FeaturedVideosAdmin from './FeaturedVideosAdmin.jsx';
 import ReelsAdmin from './ReelsAdmin.jsx';
+import DesignStudio from '../design/DesignStudio.jsx';
 
 export default function AdminApp() {
   return (
     <AuthProvider>
       <AdminGate>
         <Routes>
+          {/* The studio needs the whole screen, so it sits outside the tabs. */}
+          <Route path="studio" element={<DesignStudio />} />
           <Route element={<AdminLayout />}>
             <Route index           element={<Navigate to="/admin/podcast" replace />} />
             <Route path="podcast"  element={<PodcastAdmin />} />

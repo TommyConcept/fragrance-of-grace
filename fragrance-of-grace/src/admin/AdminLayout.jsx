@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { NavLink, Outlet, Link } from 'react-router-dom';
-import { Mic, Music, Video, Clapperboard, LogOut, ExternalLink } from 'lucide-react';
+import { Mic, Music, Video, Clapperboard, Palette, LogOut, ExternalLink } from 'lucide-react';
 import { useAuth } from './AuthContext.jsx';
 
 const tabs = [
@@ -34,6 +34,13 @@ export default function AdminLayout() {
             <p className="text-muted font-inter text-xs tracking-[0.2em] uppercase">Admin</p>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
+            <Link
+              to="/admin/studio"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded border border-gold/40 text-gold font-inter text-xs font-medium hover:bg-gold hover:text-white transition-all"
+            >
+              <Palette size={13} aria-hidden="true" />
+              Design Studio
+            </Link>
             <Link
               to="/"
               className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 text-navy/70 font-inter text-xs hover:text-gold transition-colors"

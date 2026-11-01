@@ -57,6 +57,16 @@ export default function App() {
           }
         />
 
+        {/* Friendly alias: fragranceofgrace.com/design */}
+        <Route
+          path="/design"
+          element={
+            <Suspense fallback={<div className="min-h-screen bg-ivory" />}>
+              <AdminApp />
+            </Suspense>
+          }
+        />
+
         {/* Everything else is the public website. */}
         <Route path="/*" element={<PublicSite />} />
       </Routes>
