@@ -34,12 +34,18 @@ export const TEXT_DEFAULTS = {
 
 export const IMAGE_DEFAULTS = {
   src: '',
-  fit: 'cover',           // cover | contain
+  fit: 'cover',           // cover | contain | fill
   radius: 0,
   opacity: 1,
   // Nudges the visible part of a cover image, as a CSS object-position.
   focusX: 50,
   focusY: 50,
+  // Mirrors the element vertically, as Figma's flip does.
+  flipY: false,
+  // Reproduces a Figma crop: the picture is sized and offset inside its
+  // frame, in percentages of the frame, and anything outside is clipped.
+  // Null means the picture simply fills the frame.
+  crop: null,             // { w, h, left, top } all in %
 };
 
 export const BUTTON_DEFAULTS = {

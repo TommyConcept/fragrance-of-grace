@@ -8,12 +8,18 @@ import React, { forwardRef } from 'react';
 const px = (n) => `${n}px`;
 
 function ElementBox({ el, selected, onSelect, interactive }) {
+  // Rotation first, then the flip, matching how Figma composes a transform.
+  const tf = [
+    el.rotate ? `rotate(${el.rotate}deg)` : '',
+    el.flipY ? 'scaleY(-1)' : '',
+  ].filter(Boolean).join(' ');
+
   const base = {
     position: 'absolute',
     left: px(el.x),
     top: px(el.y),
     width: px(el.w),
-    transform: el.rotate ? `rotate(${el.rotate}deg)` : undefined,
+    transform: tf || undefined,
     opacity: el.opacity ?? 1,
   };
 
@@ -52,13 +58,27 @@ function ElementBox({ el, selected, onSelect, interactive }) {
         src={el.src}
         alt=""
         crossOrigin="anonymous"
-        style={{
-          width: '100%',
-          height: '100%',
-          objectFit: el.fit,
-          objectPosition: `${el.focusX}% ${el.focusY}%`,
-          display: 'block',
-        }}
+        style={
+          el.crop
+            ? {
+                // Figma crop: size and offset the picture inside the frame,
+                // which clips it via the wrapper's overflow:hidden.
+                position: 'absolute',
+                width: `${el.crop.w}%`,
+                height: `${el.crop.h}%`,
+                left: `${el.crop.left}%`,
+                top: `${el.crop.top}%`,
+                maxWidth: 'none',
+                display: 'block',
+              }
+            : {
+                width: '100%',
+                height: '100%',
+                objectFit: el.fit,
+                objectPosition: `${el.focusX}% ${el.focusY}%`,
+                display: 'block',
+              }
+        }
       />
     ) : (
       <div style={{ width: '100%', height: '100%', background: 'rgba(255,255,255,0.08)' }} />

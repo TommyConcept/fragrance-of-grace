@@ -25,7 +25,9 @@ const elements = [
 
   // ── Microphone ──
   { id: 'mic', type: 'image', name: 'Microphone',
-    x: -122, y: 402, w: 370, h: 489, src: '/templates/t1/mic.webp', fit: 'contain' },
+    x: -94.58, y: 420.14, w: 315.218, h: 453, src: '/templates/t1/mic.webp',
+    rotate: -172.72, flipY: true,
+    crop: { w: 170.58, h: 118.69, left: -70.58, top: -9.64 } },
 
   // ── "New Drop" angled tag ──
   { id: 'tag-bg', type: 'shape', name: 'New Drop tag',
@@ -50,8 +52,8 @@ const elements = [
     fontSize: 37.5, fontWeight: 700, color: '#FFFFFF', align: 'center', lineHeight: 1.25 },
 
   // ── Headline card ──
-  { id: 'card', type: 'shape', name: 'Headline card',
-    x: 77, y: 599, w: 687, h: 504, background: '#FDF6EC', radius: 48 },
+  { id: 'card', type: 'image', name: 'Headline card',
+    x: 74.62, y: 596.68, w: 691.62, h: 510.41, src: '/templates/t1/card.svg', fit: 'fill' },
   { id: 'line1', type: 'text', name: 'Headline line 1',
     x: 202, y: 659, w: 437, text: 'WHEN THEY', fontFamily: MONT, fontSize: 66.7,
     fontWeight: 800, color: BROWN, align: 'center', lineHeight: 1.247 },
@@ -75,11 +77,76 @@ const elements = [
     x: 591, y: 1124, w: 173, h: 54, src: '/templates/t1/spotify.svg', fit: 'contain' },
 ];
 
+
+// ── YouTube 1280x720 ──
+// Laid out for landscape rather than squashed from the portrait original:
+// the photo moves to the right, the headline block fills the left, and the
+// listen bar sits bottom-right. Headline proportions inside the card are
+// scaled from the original so the type relationships are preserved.
+const ytElements = [
+  { id: 'bg-texture', type: 'image', name: 'Background texture',
+    x: 0, y: 0, w: 1280, h: 720, src: '/templates/t1/bg-texture.jpg', fit: 'cover' },
+  { id: 'bg-overlay', type: 'image', name: 'Background wash',
+    x: 0, y: 0, w: 1280, h: 720, src: '/templates/t1/bg-overlay.jpg', fit: 'cover', opacity: 0.9 },
+
+  { id: 'photo', type: 'image', name: 'Photo',
+    x: 740, y: 0, w: 540, h: 720, src: '/templates/t1/hilda.webp', fit: 'cover',
+    focusX: 50, focusY: 18 },
+
+  { id: 'mic', type: 'image', name: 'Microphone',
+    x: -52, y: 398, w: 189, h: 272, src: '/templates/t1/mic.webp',
+    rotate: -172.72, flipY: true,
+    crop: { w: 170.58, h: 118.69, left: -70.58, top: -9.64 } },
+
+  { id: 'tag-bg', type: 'shape', name: 'New Drop tag',
+    x: 32, y: 40, w: 215, h: 36, background: GOLD, rotate: -7 },
+  { id: 'tag-text', type: 'text', name: 'New Drop text',
+    x: 64, y: 41, w: 150, text: 'New Drop', fontFamily: MONT, fontSize: 26,
+    fontWeight: 600, color: '#FFFFFF', align: 'center', lineHeight: 1.25, rotate: -7 },
+
+  { id: 'new', type: 'text', name: '"NEW"',
+    x: 36, y: 58, w: 300, text: 'NEW', fontFamily: MONT, fontSize: 76,
+    fontWeight: 800, color: NAVY, align: 'left', lineHeight: 1.1 },
+  { id: 'episode', type: 'text', name: '"EPISODE"',
+    x: 36, y: 142, w: 460, text: 'EPISODE', fontFamily: MONT, fontSize: 76,
+    fontWeight: 800, color: NAVY, align: 'left', lineHeight: 1.1 },
+
+  { id: 'pill-bg', type: 'shape', name: 'Season bar',
+    x: 40, y: 236, w: 400, h: 48, background: GOLD },
+  { id: 'pill-text', type: 'text', name: 'Season & episode',
+    x: 56, y: 244, w: 368, text: 'SEASON 2 | EPISODE 7', fontFamily: MONT,
+    fontSize: 26, fontWeight: 700, color: '#FFFFFF', align: 'center', lineHeight: 1.25 },
+
+  { id: 'card', type: 'image', name: 'Headline card',
+    x: 36, y: 300, w: 560, h: 413, src: '/templates/t1/card.svg', fit: 'fill' },
+  { id: 'line1', type: 'text', name: 'Headline line 1',
+    x: 139, y: 349, w: 354, text: 'WHEN THEY', fontFamily: MONT, fontSize: 54.7,
+    fontWeight: 800, color: BROWN, align: 'center', lineHeight: 1.247 },
+  { id: 'line2', type: 'text', name: 'Headline line 2 (big)',
+    x: 153, y: 402, w: 326, text: 'STOP', fontFamily: MONT, fontSize: 114.5,
+    fontWeight: 900, color: RED, align: 'center', lineHeight: 1.247 },
+  { id: 'line3', type: 'text', name: 'Headline line 3',
+    x: 65, y: 535, w: 502, text: 'TALKING TO YOU.', fontFamily: MONT, fontSize: 54.7,
+    fontWeight: 800, color: BROWN, align: 'center', lineHeight: 0.96 },
+
+  { id: 'cta-bg', type: 'shape', name: 'Listen bar',
+    x: 690, y: 582, w: 560, h: 112, background: NAVY, radius: 24,
+    border: 3, borderColor: GOLD },
+  { id: 'cta-text', type: 'text', name: 'Listen bar text',
+    x: 710, y: 600, w: 520, text: 'WATCH OR LISTEN NOW ON', fontFamily: MONT,
+    fontSize: 27, fontWeight: 600, color: '#FFFFFF', align: 'center', lineHeight: 1.25 },
+  { id: 'logo-yt', type: 'image', name: 'YouTube logo',
+    x: 806, y: 642, w: 172, h: 39, src: '/templates/t1/youtube.svg', fit: 'contain' },
+  { id: 'logo-sp', type: 'image', name: 'Spotify logo',
+    x: 1002, y: 642, w: 126, h: 39, src: '/templates/t1/spotify.svg', fit: 'contain' },
+];
+
 export const template1 = {
   id: 'template-1',
   name: 'Template 1 — Headline Card',
   description: 'Mic and photo, with the headline on a cream card.',
   layouts: {
     'post-1080x1250': { background: '#FFFFFF', elements },
+    'yt-1280x720':    { background: '#FFFFFF', elements: ytElements },
   },
 };
