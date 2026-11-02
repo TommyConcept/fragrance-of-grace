@@ -15,17 +15,17 @@ const GOLD = '#C9A127';
 const elements = [
   // ── Background ──
   { id: 'bg-texture', type: 'image', name: 'Background texture',
-    x: -13, y: -27, w: 1140, h: 1423, src: '/templates/t1/bg-texture.png', fit: 'cover' },
+    x: -13, y: -27, w: 1140, h: 1423, src: '/templates/t1/bg-texture.jpg', fit: 'cover' },
   { id: 'bg-overlay', type: 'image', name: 'Background wash',
-    x: -13, y: -21, w: 1121, h: 1401, src: '/templates/t1/bg-overlay.png', fit: 'cover', opacity: 0.9 },
+    x: -13, y: -21, w: 1121, h: 1401, src: '/templates/t1/bg-overlay.jpg', fit: 'cover', opacity: 0.9 },
 
   // ── Photo of Hilda ──
   { id: 'photo', type: 'image', name: 'Photo',
-    x: 259, y: 78, w: 1105, h: 1172, src: '/templates/t1/hilda.png', fit: 'cover' },
+    x: 259, y: 78, w: 1105, h: 1172, src: '/templates/t1/hilda.webp', fit: 'cover' },
 
   // ── Microphone ──
   { id: 'mic', type: 'image', name: 'Microphone',
-    x: -122, y: 402, w: 370, h: 489, src: '/templates/t1/mic.png', fit: 'contain' },
+    x: -122, y: 402, w: 370, h: 489, src: '/templates/t1/mic.webp', fit: 'contain' },
 
   // ── "New Drop" angled tag ──
   { id: 'tag-bg', type: 'shape', name: 'New Drop tag',
