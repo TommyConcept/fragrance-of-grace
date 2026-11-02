@@ -14,7 +14,7 @@ const ICON = { text: Type, image: ImageIcon, button: MousePointerClick, shape: S
 
 export default function DesignStudio() {
   const [templateId, setTemplateId] = useState(null);
-  const [sizeId, setSizeId] = useState('yt-1280x720');
+  const [sizeId, setSizeId] = useState('post-1080x1250');
   const [layout, setLayout] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
   const [busy, setBusy] = useState('');
@@ -104,6 +104,12 @@ export default function DesignStudio() {
   };
 
   // ── Template chooser ──
+  const chooseTemplate = (t) => {
+    setTemplateId(t.id);
+    setLayout(null);
+    setSizeId(Object.keys(t.layouts)[0]);
+  };
+
   if (!template) {
     return (
       <main className="min-h-screen bg-ivory">
@@ -117,14 +123,21 @@ export default function DesignStudio() {
           <p className="text-muted font-inter text-sm mb-8">Pick a template to start. You can change every word, picture and colour on it.</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {TEMPLATES.map((t) => (
-              <button key={t.id} onClick={() => setTemplateId(t.id)}
+              <button key={t.id} onClick={() => chooseTemplate(t)}
                 className="text-left bg-white rounded-xl border border-gold/15 overflow-hidden hover:border-gold/45 hover:shadow-md transition-all">
-                <div className="aspect-video bg-navy/5 overflow-hidden relative">
-                  <div style={{ transform: 'scale(0.25)', transformOrigin: 'top left', width: 1280, height: 720 }}>
-                    <Canvas size={SIZES['yt-1280x720']} layout={loadLayout(t, 'yt-1280x720')}
-                      interactive={false} onSelect={() => {}} />
-                  </div>
-                </div>
+                {(() => {
+                  const firstSize = SIZES[Object.keys(t.layouts)[0]];
+                  const s = 280 / firstSize.w;
+                  return (
+                    <div className="bg-navy/5 overflow-hidden relative mx-auto"
+                      style={{ width: 280, height: firstSize.h * s }}>
+                      <div style={{ transform: `scale(${s})`, transformOrigin: 'top left' }}>
+                        <Canvas size={firstSize} layout={loadLayout(t, Object.keys(t.layouts)[0])}
+                          interactive={false} onSelect={() => {}} />
+                      </div>
+                    </div>
+                  );
+                })()}
                 <div className="p-4">
                   <p className="font-playfair text-navy font-semibold text-sm" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>{t.name}</p>
                   <p className="text-muted font-inter text-xs mt-1">{t.description}</p>
@@ -148,7 +161,7 @@ export default function DesignStudio() {
 
         <select value={sizeId} onChange={(e) => setSizeId(e.target.value)}
           className="px-3 py-2 rounded border border-gray-200 bg-white text-navy text-sm font-inter focus:outline-none focus:ring-2 focus:ring-gold/40">
-          {SIZE_LIST.map((s) => (
+          {SIZE_LIST.filter((s) => template.layouts[s.id]).map((s) => (
             <option key={s.id} value={s.id}>{s.label} — {s.w}×{s.h}</option>
           ))}
         </select>

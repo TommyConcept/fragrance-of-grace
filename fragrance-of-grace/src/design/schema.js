@@ -60,6 +60,8 @@ export const SHAPE_DEFAULTS = {
   background: 'rgba(11,27,51,0.55)',
   radius: 0,
   opacity: 1,
+  border: 0,
+  borderColor: '#C9A227',
 };
 
 export const DEFAULTS_BY_TYPE = {

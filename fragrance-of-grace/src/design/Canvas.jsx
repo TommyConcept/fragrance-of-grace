@@ -70,6 +70,8 @@ function ElementBox({ el, selected, onSelect, interactive }) {
       height: px(el.h),
       background: el.background,
       borderRadius: px(el.radius),
+      border: el.border ? `${el.border}px solid ${el.borderColor}` : undefined,
+      boxSizing: 'border-box',
     });
   }
 
