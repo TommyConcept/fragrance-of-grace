@@ -24,19 +24,10 @@ export const supabase = isSupabaseConfigured
 export const ADMIN_USERNAME = import.meta.env.VITE_ADMIN_USERNAME || 'Fragranceofgrace';
 export const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || '';
 
-// Optional: when set, the admin signs in with the username alone and this
-// password is supplied for them.
-//
-// SECURITY NOTE — this is a deliberate trade-off the site owner asked for.
-// Anything the browser can use, a visitor can read: this value is recoverable
-// from the built JavaScript by anyone who looks for it. It is weaker than
-// typing a password, and stronger than opening the database to anonymous
-// writes, because row level security still requires a real session, so an
-// automated scan with the public anon key cannot write anything.
-// Use a password that is unique to this account, and leave this unset to go
-// back to a normal password prompt.
+// Optional fallback only. Sign-in normally uses Supabase anonymous sessions,
+// which need no email and no password. These are read solely if anonymous
+// sign-in is turned off for the project, so an older deployment keeps working.
 export const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || '';
-export const PASSWORDLESS = Boolean(ADMIN_PASSWORD);
 
 // Public URL for a file in the `media` bucket.
 export function mediaUrl(path) {

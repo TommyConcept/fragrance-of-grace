@@ -3,12 +3,11 @@
 import React, { useState } from 'react';
 import { Lock, LogIn } from 'lucide-react';
 import { useAuth } from './AuthContext.jsx';
-import { ADMIN_USERNAME, PASSWORDLESS } from '../lib/supabase.js';
+import { ADMIN_USERNAME } from '../lib/supabase.js';
 
 export default function AdminLogin() {
   const { signIn } = useAuth();
   const [username, setUsername] = useState(ADMIN_USERNAME);
-  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
 
@@ -16,7 +15,7 @@ export default function AdminLogin() {
     e.preventDefault();
     setBusy(true);
     setError('');
-    const { error: err } = await signIn(username, password);
+    const { error: err } = await signIn(username);
     if (err) setError(err);
     setBusy(false);
   };
@@ -50,7 +49,7 @@ export default function AdminLogin() {
           <label htmlFor="username" className="block text-xs font-inter font-medium text-navy/70 mb-1.5">
             Username
           </label>
-          <div className={PASSWORDLESS ? '' : 'mb-4'}>
+          <div>
           <input
             id="username"
             type="text"
@@ -61,24 +60,6 @@ export default function AdminLogin() {
           />
           </div>
 
-          {/* The password field only appears when no password is configured
-              for this deployment. */}
-          {!PASSWORDLESS && (
-            <>
-              <label htmlFor="password" className="block text-xs font-inter font-medium text-navy/70 mb-1.5">
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                autoComplete="current-password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className={field}
-              />
-            </>
-          )}
-
           {error && (
             <p className="text-red-600 text-xs font-inter mt-4 leading-relaxed" role="alert">
               {error}
@@ -87,7 +68,7 @@ export default function AdminLogin() {
 
           <button
             type="submit"
-            disabled={busy || (!PASSWORDLESS && !password)}
+            disabled={busy || !username.trim()}
             className="w-full mt-6 inline-flex items-center justify-center gap-2 px-6 py-3 bg-navy text-ivory font-inter font-medium text-sm rounded tracking-wide hover:bg-gold hover:text-white transition-all disabled:opacity-50 disabled:hover:bg-navy disabled:hover:text-ivory"
           >
             <LogIn size={15} aria-hidden="true" />

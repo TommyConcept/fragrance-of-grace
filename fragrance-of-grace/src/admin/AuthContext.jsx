@@ -22,38 +22,40 @@ export function AuthProvider({ children }) {
     return () => sub.subscription.unsubscribe();
   }, []);
 
-  // Accepts the username rather than an email address. The username maps to the
-  // single admin account. When VITE_ADMIN_PASSWORD is configured the password
-  // is supplied automatically, so the owner signs in with a username alone.
-  const signIn = async (username, password) => {
+  // The owner signs in with a username and nothing else.
+  //
+  // The username is checked here, then an anonymous Supabase session is
+  // opened. That session still carries the `authenticated` role, so the row
+  // level security written in schema.sql keeps working untouched — no email,
+  // no password, and no credential inside the bundle.
+  //
+  // This is a convenience the site owner asked for, not a security boundary:
+  // the username is public, so anyone who reaches /design can open a session
+  // the same way.
+  const signIn = async (username) => {
     if (!isSupabaseConfigured) {
       return { error: 'The admin area is not configured yet. Add the Supabase keys in Vercel and redeploy.' };
-    }
-    if (!ADMIN_EMAIL) {
-      return { error: 'No admin email is configured. Set VITE_ADMIN_EMAIL in Vercel and redeploy.' };
     }
     if (username.trim().toLowerCase() !== ADMIN_USERNAME.toLowerCase()) {
       return { error: 'That username was not recognised.' };
     }
 
-    const effectivePassword = ADMIN_PASSWORD || password;
-    if (!effectivePassword) {
-      return { error: 'Please enter your password.' };
+    const { error } = await supabase.auth.signInAnonymously();
+    if (!error) return { error: null };
+
+    // Anonymous sign-in is off for this project. Fall back to the stored
+    // password if one was configured, otherwise say exactly what to switch on.
+    if (ADMIN_EMAIL && ADMIN_PASSWORD) {
+      const { error: pwErr } = await supabase.auth.signInWithPassword({
+        email: ADMIN_EMAIL,
+        password: ADMIN_PASSWORD,
+      });
+      if (!pwErr) return { error: null };
     }
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email: ADMIN_EMAIL,
-      password: effectivePassword,
-    });
-    if (error) {
-      return {
-        error: ADMIN_PASSWORD
-          // The owner typed nothing wrong — the stored password is stale.
-          ? 'Sign in failed. The saved password no longer matches this account; update VITE_ADMIN_PASSWORD in Vercel and redeploy.'
-          : 'That username and password do not match.',
-      };
-    }
-    return { error: null };
+    return {
+      error: 'Could not sign in. In Supabase, open Authentication, then Sign In / Providers, and turn on "Allow anonymous sign-ins".',
+    };
   };
 
   const signOut = async () => {

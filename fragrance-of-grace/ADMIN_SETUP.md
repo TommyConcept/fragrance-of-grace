@@ -29,15 +29,19 @@ This creates the three tables, locks them down so only you can edit,
 creates the image storage bucket, and fills them with the content that is
 on the site today. Re-running it later is safe — it never overwrites your edits.
 
-## 3. Create your admin login
+## 3. Turn on username-only sign-in
 
-1. Sidebar → **Authentication** → **Users** → **Add user** → **Create new user**.
-2. Email: your real email address (used for password resets).
-3. Password: the password you will type at `/admin`. Make it a strong one.
-4. Tick **Auto Confirm User**, then create.
+Sign-in needs no email and no password. The username opens an anonymous
+Supabase session, which still satisfies the security rules from step 2.
 
-This is the only account. There is no sign-up page on the site, so nobody
-else can create one.
+1. Sidebar -> **Authentication** -> **Sign In / Providers**.
+2. Turn on **Allow anonymous sign-ins**.
+
+That is the whole step. There is no user to create and no password to keep.
+
+> **Know what this means.** The username is your public brand name, so anyone
+> who finds `/design` can sign in the same way Hilda does. It is a convenience,
+> not a lock. To put a real lock back, see "Requiring a password again" below.
 
 ## 4. Collect your two keys
 
@@ -62,8 +66,8 @@ for all environments (Production, Preview, Development):
 | `VITE_SUPABASE_URL` | your Project URL from step 4 |
 | `VITE_SUPABASE_ANON_KEY` | your anon public key from step 4 |
 | `VITE_ADMIN_USERNAME` | `Fragranceofgrace` |
-| `VITE_ADMIN_EMAIL` | the email you used in step 3 |
-| `VITE_ADMIN_PASSWORD` | *optional* — see "Signing in with just a username" below |
+| `VITE_ADMIN_EMAIL` | *optional* — only for the password fallback below |
+| `VITE_ADMIN_PASSWORD` | *optional* — only for the password fallback below |
 
 Then **Deployments** → latest → **Redeploy**. Vite reads these at build
 time, so a redeploy is required for them to take effect.
@@ -102,26 +106,20 @@ Run it the same way as `schema.sql`: **SQL Editor** → **New query** → paste 
 
 Run these before using a new tab, or saving will fail with a column error.
 
-## Signing in with just a username
+## Requiring a password again
 
-By default you type a username and a password. If you would rather sign in with
-the username alone, set `VITE_ADMIN_PASSWORD` in Vercel to your admin password
-and redeploy. The password box then disappears.
+If you later want the admin locked properly:
 
-**Know what this costs.** That password is built into the JavaScript every
-visitor downloads. Anyone who goes looking through it can recover it and sign in
-as you, edit your episodes, or delete them. It is a convenience setting, not a
-secure one.
+1. In Supabase, turn **Allow anonymous sign-ins** back off.
+2. Create a user under **Authentication** -> **Users** with an email and a
+   strong password, ticking **Auto Confirm User**.
+3. Set `VITE_ADMIN_EMAIL` and `VITE_ADMIN_PASSWORD` in Vercel to match, and
+   redeploy.
 
-Two things make it less risky:
-
-- Use a password that is used for nothing else, so recovering it gives away
-  nothing but this admin area.
-- Saving still requires a real signed-in session, so an automated scan cannot
-  write to your content without first extracting that password.
-
-To undo it at any time, delete the `VITE_ADMIN_PASSWORD` variable in Vercel and
-redeploy. The password box comes back and nothing else changes.
+Sign-in then falls back to that account automatically. Note the password is
+still built into the page and recoverable by anyone who looks for it; for a
+genuine lock, the password box would need to come back, which is a small code change
+Claude can make on request.
 
 ## Good to know
 
