@@ -62,7 +62,7 @@ export default function App() {
           path="/design"
           element={
             <Suspense fallback={<div className="min-h-screen bg-ivory" />}>
-              <AdminApp />
+              <AdminApp studioOnly />
             </Suspense>
           }
         />

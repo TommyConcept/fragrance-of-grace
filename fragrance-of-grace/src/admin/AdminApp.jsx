@@ -12,7 +12,21 @@ import FeaturedVideosAdmin from './FeaturedVideosAdmin.jsx';
 import ReelsAdmin from './ReelsAdmin.jsx';
 import DesignStudio from '../design/DesignStudio.jsx';
 
-export default function AdminApp() {
+/**
+ * `studioOnly` serves /design, where the Design Studio is the whole point and
+ * there is no admin index to fall through to.
+ */
+export default function AdminApp({ studioOnly = false }) {
+  if (studioOnly) {
+    return (
+      <AuthProvider>
+        <AdminGate>
+          <DesignStudio />
+        </AdminGate>
+      </AuthProvider>
+    );
+  }
+
   return (
     <AuthProvider>
       <AdminGate>
