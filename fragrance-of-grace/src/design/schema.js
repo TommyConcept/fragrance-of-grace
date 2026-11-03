@@ -82,12 +82,86 @@ export function hydrate(el) {
   return { rotate: 0, locked: false, ...DEFAULTS_BY_TYPE[el.type], ...el };
 }
 
-/** A working copy of one template at one size. */
-export function loadLayout(template, sizeId) {
-  const layout = template.layouts[sizeId];
-  if (!layout) return null;
+// Properties that are lengths and so scale with the canvas.
+const SCALED = ['fontSize', 'letterSpacing', 'radius', 'border', 'paddingX', 'paddingY'];
+
+/**
+ * Derives a layout for a size the template was not drawn at.
+ *
+ * Content is scaled by the smaller of the two ratios and centred, so nothing
+ * is ever cut off. Full-bleed pictures — the ones already drawn larger than
+ * the canvas — are scaled by the larger ratio instead, so backgrounds still
+ * cover the frame rather than leaving bars down the sides.
+ *
+ * This reads well for sizes near the original's proportions. A much wider
+ * canvas wants a real layout, which is why the templates carry hand-made
+ * wide ones.
+ */
+export function fitLayout(layout, from, to) {
+  const fit = Math.min(to.w / from.w, to.h / from.h);
+  const fitX = (to.w - from.w * fit) / 2;
+  const fitY = (to.h - from.h * fit) / 2;
+
+  const cover = Math.max(to.w / from.w, to.h / from.h);
+  const coverX = (to.w - from.w * cover) / 2;
+  const coverY = (to.h - from.h * cover) / 2;
+
   return {
-    background: layout.background ?? '#0B1B33',
-    elements: layout.elements.map(hydrate),
+    background: layout.background,
+    elements: layout.elements.map((el) => {
+      const bleeds =
+        el.type !== 'text' &&
+        el.x <= 0 && el.y <= 0 &&
+        el.x + el.w >= from.w && el.y + el.h >= from.h;
+
+      const k = bleeds ? cover : fit;
+      const ox = bleeds ? coverX : fitX;
+      const oy = bleeds ? coverY : fitY;
+
+      const out = { ...el, x: el.x * k + ox, y: el.y * k + oy, w: el.w * k, h: el.h * k };
+      for (const prop of SCALED) {
+        if (typeof el[prop] === 'number') out[prop] = el[prop] * k;
+      }
+      return out;
+    }),
   };
+}
+
+/**
+ * A working copy of one template at one size. Falls back to deriving the
+ * layout from the template's base size when it has no hand-made one.
+ */
+export function loadLayout(template, sizeId, sizes, baseSizeId) {
+  const own = template.layouts[sizeId];
+  if (own) {
+    return {
+      background: own.background ?? '#0B1B33',
+      elements: own.elements.map(hydrate),
+    };
+  }
+
+  // Derive from whichever hand-made layout is closest in shape. A wide canvas
+  // like Facebook comes from the YouTube layout rather than the portrait one,
+  // which keeps the composition instead of letterboxing it.
+  const target = sizes?.[sizeId];
+  if (!target) return null;
+
+  const candidates = Object.keys(template.layouts).filter((id) => sizes[id]);
+  if (candidates.length === 0) return null;
+
+  const aspect = (id) => sizes[id].w / sizes[id].h;
+  const wanted = target.w / target.h;
+  const baseId = candidates.reduce((best, id) =>
+    Math.abs(aspect(id) - wanted) < Math.abs(aspect(best) - wanted) ? id : best
+  );
+
+  const base = template.layouts[baseId];
+  if (!base) return null;
+
+  const fitted = fitLayout(
+    { background: base.background ?? '#0B1B33', elements: base.elements },
+    sizes[baseId],
+    sizes[sizeId]
+  );
+  return { background: fitted.background, elements: fitted.elements.map(hydrate) };
 }

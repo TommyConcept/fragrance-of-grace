@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Download, ArrowLeft, Layers, RotateCcw, Image as ImageIcon, Type, Square, MousePointerClick } from 'lucide-react';
 import { TEMPLATES, getTemplate } from './templates/index.js';
-import { SIZE_LIST, SIZES } from './sizes.js';
+import { SIZE_LIST, SIZES, BASE_SIZE } from './sizes.js';
 import { loadLayout } from './schema.js';
 import Canvas from './Canvas.jsx';
 import Inspector from './Inspector.jsx';
@@ -32,7 +32,7 @@ export default function DesignStudio() {
   // text and pictures she has already changed on a matching element.
   useEffect(() => {
     if (!template) { setLayout(null); return; }
-    const next = loadLayout(template, sizeId);
+    const next = loadLayout(template, sizeId, SIZES, BASE_SIZE);
     if (!next) return;
     setLayout((prev) => {
       if (!prev) return next;
@@ -87,7 +87,7 @@ export default function DesignStudio() {
   };
 
   const reset = () => {
-    setLayout(loadLayout(template, sizeId));
+    setLayout(loadLayout(template, sizeId, SIZES, BASE_SIZE));
     setSelectedId(null);
   };
 
@@ -107,7 +107,7 @@ export default function DesignStudio() {
   const chooseTemplate = (t) => {
     setTemplateId(t.id);
     setLayout(null);
-    setSizeId(Object.keys(t.layouts)[0]);
+    setSizeId(t.baseSize ?? BASE_SIZE);
   };
 
   if (!template) {
@@ -126,13 +126,13 @@ export default function DesignStudio() {
               <button key={t.id} onClick={() => chooseTemplate(t)}
                 className="text-left bg-white rounded-xl border border-gold/15 overflow-hidden hover:border-gold/45 hover:shadow-md transition-all">
                 {(() => {
-                  const firstSize = SIZES[Object.keys(t.layouts)[0]];
+                  const firstSize = SIZES[t.baseSize ?? BASE_SIZE];
                   const s = 280 / firstSize.w;
                   return (
                     <div className="bg-navy/5 overflow-hidden relative mx-auto"
                       style={{ width: 280, height: firstSize.h * s }}>
                       <div style={{ transform: `scale(${s})`, transformOrigin: 'top left' }}>
-                        <Canvas size={firstSize} layout={loadLayout(t, Object.keys(t.layouts)[0])}
+                        <Canvas size={firstSize} layout={loadLayout(t, t.baseSize ?? BASE_SIZE, SIZES, BASE_SIZE)}
                           interactive={false} onSelect={() => {}} />
                       </div>
                     </div>
@@ -161,7 +161,7 @@ export default function DesignStudio() {
 
         <select value={sizeId} onChange={(e) => setSizeId(e.target.value)}
           className="px-3 py-2 rounded border border-gray-200 bg-white text-navy text-sm font-inter focus:outline-none focus:ring-2 focus:ring-gold/40">
-          {SIZE_LIST.filter((s) => template.layouts[s.id]).map((s) => (
+          {SIZE_LIST.map((s) => (
             <option key={s.id} value={s.id}>{s.label} — {s.w}×{s.h}</option>
           ))}
         </select>
