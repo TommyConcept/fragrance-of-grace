@@ -92,6 +92,7 @@ function ElementBox({ el, selected, onSelect, interactive }) {
       borderRadius: px(el.radius),
       border: el.border ? `${el.border}px solid ${el.borderColor}` : undefined,
       boxSizing: 'border-box',
+      filter: el.blur ? `blur(${el.blur}px)` : undefined,
     });
   }
 

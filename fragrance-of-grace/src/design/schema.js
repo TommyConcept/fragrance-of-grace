@@ -68,6 +68,8 @@ export const SHAPE_DEFAULTS = {
   opacity: 1,
   border: 0,
   borderColor: '#C9A227',
+  // Gaussian blur in px, for the soft colour washes some templates use.
+  blur: 0,
 };
 
 export const DEFAULTS_BY_TYPE = {
@@ -83,7 +85,7 @@ export function hydrate(el) {
 }
 
 // Properties that are lengths and so scale with the canvas.
-const SCALED = ['fontSize', 'letterSpacing', 'radius', 'border', 'paddingX', 'paddingY'];
+const SCALED = ['fontSize', 'letterSpacing', 'radius', 'border', 'paddingX', 'paddingY', 'blur'];
 
 /**
  * Derives a layout for a size the template was not drawn at.
