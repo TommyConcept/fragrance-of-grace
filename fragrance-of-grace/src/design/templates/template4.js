@@ -15,6 +15,12 @@ const MIC_CROP = { w: 170.58, h: 118.69, left: -70.58, top: -9.64 };
 const elements = [
   { id: 'bg', type: 'image', name: 'Background',
     x: -21, y: 0, w: 1121, h: 1401, src: '/templates/t1/bg-overlay.jpg', fit: 'cover', opacity: 0.9 },
+  // Added in the latest Figma revision: a geometric gradient over the base
+  // background, cropped as Figma crops it.
+  { id: 'bg-pattern', type: 'image', name: 'Background pattern',
+    x: -60, y: -9, w: 1238.33, h: 1309, src: '/templates/t4/bg.jpg',
+    crop: { w: 100, h: 133.8, left: 0, top: -33.8 } },
+
   // A pale blue wash over the whole background.
   { id: 'tint', type: 'shape', name: 'Colour wash',
     x: -30, y: 0, w: 1178, h: 1291, background: TINT },
@@ -71,6 +77,9 @@ const elements = [
 const ytElements = [
   { id: 'bg', type: 'image', name: 'Background',
     x: 0, y: 0, w: 1280, h: 1280, src: '/templates/t1/bg-overlay.jpg', fit: 'cover', opacity: 0.9 },
+  { id: 'bg-pattern', type: 'image', name: 'Background pattern',
+    x: 0, y: 0, w: 1280, h: 1354, src: '/templates/t4/bg.jpg',
+    crop: { w: 100, h: 133.8, left: 0, top: -33.8 } },
   { id: 'tint', type: 'shape', name: 'Colour wash',
     x: 0, y: 0, w: 1280, h: 720, background: TINT },
 

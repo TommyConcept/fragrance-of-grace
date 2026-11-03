@@ -23,6 +23,12 @@ const elements = [
     x: -77.55, y: 228.61, w: 397.946, h: 571.888, src: '/templates/t1/mic.webp',
     rotate: 168.63, crop: MIC_CROP },
 
+  { id: 'bg-pattern', type: 'image', name: 'Background pattern',
+    x: -42, y: -473, w: 1178, h: 1728.94, src: '/templates/t5/bg.jpg', fit: 'cover' },
+  { id: 'bg-pattern-2', type: 'image', name: 'Background pattern top',
+    x: -42, y: -473, w: 1178, h: 995, src: '/templates/t5/bg.jpg',
+    crop: { w: 100, h: 173.76, left: -0.01, top: 47.1 } },
+
   { id: 'photo', type: 'image', name: 'Photo',
     x: 145, y: 413, w: 789.04, h: 837, src: '/templates/t1/hilda.webp', fit: 'cover' },
 
@@ -75,6 +81,9 @@ const ytElements = [
   { id: 'mic', type: 'image', name: 'Microphone',
     x: -60, y: 250, w: 320, h: 460, src: '/templates/t1/mic.webp',
     rotate: 168.63, crop: MIC_CROP },
+
+  { id: 'bg-pattern', type: 'image', name: 'Background pattern',
+    x: 0, y: 0, w: 1280, h: 1879, src: '/templates/t5/bg.jpg', fit: 'cover' },
 
   { id: 'photo', type: 'image', name: 'Photo',
     x: 604, y: -8, w: 709.5, h: 946, src: '/templates/t1/hilda.webp', fit: 'cover' },
