@@ -1,0 +1,10 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="522.842" height="636.354" viewBox="0 0 522.842 636.354" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Rectangle 34625754">
+<path d="M6 6.85404L485.5 70.854L516.5 630.354H6V6.85404Z" fill="#598E77"/>
+<mask id="stroke0_0_21" maskUnits="userSpaceOnUse" x="0" y="-0.145957" width="523" height="637" fill="black">
+<rect fill="white" y="-0.145957" width="523" height="637"/>
+<path d="M6 6.85404L485.5 70.854L516.5 630.354H6V6.85404Z"/>
+</mask>
+<path d="M6 6.85404L485.5 70.854L516.5 630.354H6V6.85404Z" stroke-width="12" stroke="#BBD28E" mask="url(#stroke0_0_21)"/>
+</g>
+</svg>
